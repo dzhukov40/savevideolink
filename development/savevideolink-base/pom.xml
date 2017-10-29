@@ -2,17 +2,15 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <parent>
+        <artifactId>savevideolink-parent</artifactId>
+        <groupId>ru.doneathome.savevideolink</groupId>
+        <version>1.0.0</version>
+        <relativePath>../savevideolink-parent</relativePath>
+    </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>ru.doneathome.savevideolink</groupId>
-    <artifactId>savevideolink-root</artifactId>
-    <version>1.0.0</version>
-    <packaging>pom</packaging>
-
-    <modules>
-        <module>development/savevideolink-parent</module>
-    </modules>
-
+    <artifactId>savevideolink-base</artifactId>
 
 
 </project>

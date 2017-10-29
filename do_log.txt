@@ -37,7 +37,7 @@
   - способ разворачивания и настройки
     - ansible
   - тестирование
-    - junit
+    - JUnit
   - front
     - Angular (*)
 
@@ -55,7 +55,7 @@
   [service 1]............[service n] (*) Сервисы могут быть разного уровня и содержать
   .         .            .         .     в себе сервисы уровнем пониже
   .         .            .         .
-  [service 1]............[service n] (*) в конце сервисы работы с данными
+  [service 1]............[service n] (*) в конце сервисы поменьше, не включащие другие сервисы в себя
   |
   |
   [DAO]                              (*) это подход к организации работы с данными в базе
@@ -91,6 +91,75 @@
          *.iml
          /target
       ]
+  - [ git add <файл/папка> ] - так добавляем все папки и файлы
+    - (*) можно просто правой кнопкой на файл [git->add]
+    [ git status ] - смотри текущее состояние
+  - хотим настроить, чтобы комиты были от имени меня,
+    тоесть пользователя с моим именем и @mail-ом.
+    (*) параметр --global сделает настройку на уровне системы,
+    а не только конкретно этого проекта, что для меня удобно.
+    [ git config --global user.name "dzhukov40" ]
+    [ git config --global user.email dzhukov40.v@mail.ru ]
+    (*) проверяем -> [ git config --list ]
+  - делаем первоначальный коммит с сообщением !
+    [ git commit -m "First commit" ]
+    (*) посмотреть историю коммитов -> [ git log ]
+  - идем на [ github.com ] и создаем новый репозиторий
+    назовем его как наш проект [groupID + artifactID]
+    (*) например [ savevideolink ]
+  - так-как мы уже создали локальный репозиторий, мы
+    добавим его в наш локальный, а потом засинхронизируем
+    [ git remote add origin <url.git> ] - добавляем
+    (*) проверяем -> [ git config --list ]
+    [ git push -u origin master ] - отправляем все,что есть
+    в ветке мастера !
+    (*) можем удалить удаленный репозиторий [ git remote remove origin ]
+    (*) попросят имя user и password от [ github.com ]
+    (*) идем на [github.com] и радуемся
+  - хотим подружить IDEA и GIT
+    (*) шок - они уже дружат)))
+
+
+3) настраиваем [структура проекта] (*) будем дописывать тут при изменении!!!
+  - [*] выкачали [searchwiz] для примера архитектуры приложения
+    - собираем проектик
+    - закидываем файл в директорию пакетов
+      - [ mvn install:install-file -Dfile=<path-to-file> -DgroupId=<group-id> -DartifactId=<artifact-id> -Dversion=<version> -Dpackaging=<packaging> ]
+      - запускаем в консоли mvn проекта [/home/dzhukov/work/3.3.0/development/searchwiz-parent]
+      - [ mvn install:install-file -Dfile=../lib/ojdbc6-11.2.0.jar -DgroupId=com.oracle -DartifactId=ojdbc6 -Dversion=11.2.0 -Dpackaging=jar ]
+      - собираем рутовый проект [searchwiz: root] -> [ clean, insall ]
+  - создали:
+   - [ansible]: тут будет написаны скрипты развертывания
+     - [distrib]: кроме дистрибутивов, еще положить артифакты проекта
+  - [db]: разрабатываем тут базюлю
+    - [liquibase]: накатывать базюлю будет через ликви
+  - [development]: тут будут модули (*) весь код разобьем на модули
+    - [*] создаем модуль в корне проекта потом перемещаем
+      - создать надо сначала [savevideolink-parent] потом все новые модули
+        указывать в нем !!
+      - если модуль серинький в [maven] окне надо пкм [unignor modul]
+    - [*] переименовали сам верхний проект в [savevideolink-root]
+    - [*] надо в самом верхнем [pom.xml] написать
+      - а в помник [parent] модули для него!
+      [
+        <modules>
+          <module>development/savevideolink-parent</module>
+        </modules>
+      ]
+    - [config]: пока не ясно что за настройки тут будут
+    - модуль [savevideolink-parent]: в этом модуле будет главный помник с версиями артифактов
+    - модуль [savevideolink-base]: тут у нас основа
+    - модуль [savevideolink-utill]: вспомогательные классы
+    - модуль [savevideolink-web]: наш фронт (*)
+    - модуль [savevideolink-dao-hibernate-spring]: описываем работу с базюлей
+
+
+
+
+
+
+
+
 
 
 
