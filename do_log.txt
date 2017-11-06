@@ -151,11 +151,47 @@
     - модуль [savevideolink-base]: тут у нас основа
     - модуль [savevideolink-utill]: вспомогательные классы
     - модуль [savevideolink-web]: наш фронт (*)
-    - модуль [savevideolink-dao-hibernate-spring]: описываем работу с базюлей
+    - модуль [savevideolink-dao-hibernate-spring]: описываем работу с базюлей.
+      - тут получаем в итоге кучу сервисов работы через DAO с базюлей
 
 
-
-
+4) настраиваем [структуру базы данных] (*) будем дописывать тут при изменении!!!
+  - создали виртуалочку на убунте [savevideolink]
+  - на виртуалку поставим [ postgresql ]
+    - [*] [https://www.digitalocean.com/community/tutorials/postgresql-ubuntu-16-04-ru]
+    - [sudo apt install postgresql]
+      - разрешить с других ip конектиться:
+        [
+            - пробуем зайти на локальную базу
+              - [ sudo netstat -natp | grep postgres ] получаем [ 5432 ]
+            - По умолчанию соединения через TCP/IP заблокированы.
+              - топаем [ cd /etc/postgresql/9.5/main/ ]
+              - открываем [ sudo vim ./postgresql.conf ]
+              - раскоменчиваем [ listen_address ] и можем поставить 0.0.0.0
+              - заходим вот так, заметь что ключ для sudo
+                - заходим [ sudo -u postgres psql ]    [*] поменяй на одинарные ковычки
+                - меняем пароль [ ALTER USER postgres with encrypted password "your_password"; ]
+                  - ставим пароль [ postgres ]
+                - в [ sudo vim /etc/postgresql/8.4/main/pg_hba.conf ] ставим использование [ md5 ]
+                - [ local   all         postgres                          md5 ]
+            - можем перезагрузить сервис [ sudo /etc/init.d/postgresql restart ]
+              - теперь заходим по паролю и можем попасть через [ pgadmin3 ]
+        ]
+    - зайти в базу можно только пользователем [ sudo -i -u postgres ]
+    - выйти из базы [ \q ]
+    - надо создать пользователя [ man createuser ]
+  - формируем первые таблицы
+    - [ USER ] данные пользователя
+    - [ LINK ] данные о ссылке на видео
+    - [ LIST ] список ссылок (папка как бы)
+    - [ LINK_LIST ] это таблица связи многие ко многим таблиц (LINK <-> LIST)
+  - качаем [liquibase] -> [http://www.liquibase.org/index.html]
+   - [db] -> [liquibase] (*) ver 3.5.3
+     - распокавали -> удалили [lib and sdk]
+     - создали папку [jdbcDriver] и скачали драйвер для [postgreSQL]
+       - [ https://jdbc.postgresql.org/download/postgresql-42.1.4.jar ]
+   - нужно выбрать стратегию хранения файлов [changeSet]
+     - (*) выбрали, что один ченчсет на версию
 
 
 
