@@ -159,32 +159,48 @@
   - создали виртуалочку на убунте [savevideolink]
   - на виртуалку поставим [ postgresql ]
     - [*] [https://www.digitalocean.com/community/tutorials/postgresql-ubuntu-16-04-ru]
-    - [sudo apt install postgresql]
+    - [ sudo apt install postgresql ]
       - разрешить с других ip конектиться:
         [
             - пробуем зайти на локальную базу
               - [ sudo netstat -natp | grep postgres ] получаем [ 5432 ]
+              - [*] запустить если надо [ sudo service postgresql restart ]
             - По умолчанию соединения через TCP/IP заблокированы.
               - топаем [ cd /etc/postgresql/9.5/main/ ]
               - открываем [ sudo vim ./postgresql.conf ]
-              - раскоменчиваем [ listen_address ] и можем поставить 0.0.0.0
+              - раскоменчиваем [ listen_address ] и можем поставить '0.0.0.0'
               - заходим вот так, заметь что ключ для sudo
                 - заходим [ sudo -u postgres psql ]    [*] поменяй на одинарные ковычки
-                - меняем пароль [ ALTER USER postgres with encrypted password "your_password"; ]
+                - меняем пароль [ ALTER USER postgres with encrypted password 'postgres'; ]
                   - ставим пароль [ postgres ]
-                - в [ sudo vim /etc/postgresql/8.4/main/pg_hba.conf ] ставим использование [ md5 ]
-                - [ local   all         postgres                          md5 ]
-            - можем перезагрузить сервис [ sudo /etc/init.d/postgresql restart ]
+                - в [ sudo vim /etc/postgresql/9.5/main/pg_hba.conf ] ставим использование [ md5 ]
+                - [ host   all         postgres    0.0.0.0/0           md5 ]
+            - можем перезагрузить сервис [ sudo service postgresql restart ]
               - теперь заходим по паролю и можем попасть через [ pgadmin3 ]
+                - локально [ psql -h localhost -p 5432 -U postgres ]
+                - удаленно [ psql -h 192.168.56.10 -p 5432 -U postgres ]
+            - создаем пользователя и базу
+              - [*] посмотреть список баз [ \l ], список пользователей [ \du ]
+              - пользователя и базюлю:
+                [
+                  (*) psql -h localhost -p 5432 -U postgres
+                  create database savevideolink with encoding='UNICODE';
+                  create user savevideolink with password 'savevideolink';
+                  grant all privileges on database savevideolink to savevideolink;
+                  (*) [ \q ] добавили строчку с пользователем [savevideolink]
+                  (*) sudo service postgresql restart
+                ]
+            - надо попробовать удаленно приконектиться
+              - [ psql -h 192.168.56.10 -p 5432 -U savevideolink ]
         ]
     - зайти в базу можно только пользователем [ sudo -i -u postgres ]
     - выйти из базы [ \q ]
     - надо создать пользователя [ man createuser ]
   - формируем первые таблицы
-    - [ USER ] данные пользователя
-    - [ LINK ] данные о ссылке на видео
-    - [ LIST ] список ссылок (папка как бы)
-    - [ LINK_LIST ] это таблица связи многие ко многим таблиц (LINK <-> LIST)
+    - [ all_users ] данные пользователя
+    - [ links ] данные о ссылке на видео
+    - [ lists ] список ссылок (папка как бы)
+    - [ links_lists ] это таблица связи многие ко многим таблиц (LINK <-> LIST)
   - качаем [liquibase] -> [http://www.liquibase.org/index.html]
    - [db] -> [liquibase] (*) ver 3.5.3
      - распокавали -> удалили [lib and sdk]
@@ -192,8 +208,14 @@
        - [ https://jdbc.postgresql.org/download/postgresql-42.1.4.jar ]
    - нужно выбрать стратегию хранения файлов [changeSet]
      - (*) выбрали, что один ченчсет на версию
-
-
+     - настроиил [liqubase]
+     - запустили
+       - [ ./runLiquibase_savevideolink.sh jdbc:postgresql://192.168.56.10:5432 savevideolink savevideolink ]
+       - видим что все прошло успешно, для [liqubase] нужно 2-е таблицы
+         - [databasechangelog] и [databasechangeloglock]
+   - нужно подключиться к базюли из [idea]
+     - [vieu] -> [Database] -> [+] -> [postgreSQL]
+     - указали параметры, жмакнули скачать драйвер, приконектились
 
 
 

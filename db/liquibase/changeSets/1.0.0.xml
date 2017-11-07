@@ -7,19 +7,67 @@
          http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
 
 
-
-    <changeSet id="1" author="bob">
-        <createTable tableName="department">
-            <column name="id" type="int">
-                <constraints primaryKey="true" nullable="false"/>
-            </column>
-            <column name="name" type="varchar(50)">
-                <constraints nullable="false"/>
-            </column>
-            <column name="active" type="boolean" defaultValueBoolean="true"/>
-        </createTable>
+    <changeSet author="dzhukov" id="20171007-1">
+        <comment>Structure for table "all_users"</comment>
+        <sql>
+            CREATE TABLE all_users (
+            user_id BIGSERIAL,
+            name varchar(40) NOT NULL UNIQUE,
+            password varchar(40) NOT NULL,
+            CONSTRAINT user_id_pk PRIMARY KEY (user_id)
+            );
+        </sql>
+        <rollback>
+            DROP TABLE IF EXISTS all_users;
+        </rollback>
     </changeSet>
 
+    <changeSet author="dzhukov" id="20171008-1">
+        <comment>Structure for table "links"</comment>
+        <sql>
+            CREATE TABLE links (
+            link_id BIGSERIAL,
+            link text NOT NULL UNIQUE,
+            link_master bigint NOT NULL,
+            CONSTRAINT link_id_pk PRIMARY KEY (link_id),
+            FOREIGN KEY (link_master) REFERENCES all_users (user_id)
+            );
+        </sql>
+        <rollback>
+            DROP TABLE IF EXISTS links;
+        </rollback>
+    </changeSet>
 
+    <changeSet author="dzhukov" id="20171008-2">
+        <comment>Structure for table "lists"</comment>
+        <sql>
+            CREATE TABLE lists (
+            list_id BIGSERIAL,
+            describe varchar(200) NOT NULL,
+            list_master bigint NOT NULL,
+            CONSTRAINT list_id_pk PRIMARY KEY (list_id),
+            FOREIGN KEY (list_master) REFERENCES all_users (user_id)
+            );
+        </sql>
+        <rollback>
+            DROP TABLE IF EXISTS lists;
+        </rollback>
+    </changeSet>
+
+    <changeSet author="dzhukov" id="20171008-3">
+        <comment>Structure for table "links_lists"</comment>
+        <sql>
+            CREATE TABLE links_lists (
+            link_id bigint NOT NULL,
+            list_id bigint NOT NULL,
+            CONSTRAINT links_lists_pk PRIMARY KEY (link_id, list_id),
+            FOREIGN KEY (link_id) REFERENCES links (link_id),
+            FOREIGN KEY (list_id) REFERENCES lists (list_id)
+            );
+        </sql>
+        <rollback>
+            DROP TABLE IF EXISTS links_lists;
+        </rollback>
+    </changeSet>
 
 </databaseChangeLog>
