@@ -22,12 +22,45 @@
         </rollback>
     </changeSet>
 
+    <changeSet author="dzhukov" id="20171007-2">
+        <comment>Structure for table "roles"</comment>
+        <sql>
+            CREATE TABLE roles (
+            role_id BIGSERIAL,
+            role integer NOT NULL UNIQUE,
+            CONSTRAINT role_id_pk PRIMARY KEY (role_id)
+            );
+        </sql>
+        <rollback>
+            DROP TABLE IF EXISTS roles;
+        </rollback>
+    </changeSet>
+
+    <changeSet author="dzhukov" id="20171007-3">
+        <comment>Structure for table "all_users_roles"</comment>
+        <sql>
+            CREATE TABLE all_users_roles (
+            user_id bigint NOT NULL,
+            role_id bigint NOT NULL,
+            CONSTRAINT all_users_roles_pk PRIMARY KEY (user_id, role_id),
+            FOREIGN KEY (user_id) REFERENCES all_users (user_id),
+            FOREIGN KEY (role_id) REFERENCES roles (role_id)
+            );
+        </sql>
+        <rollback>
+            DROP TABLE IF EXISTS all_users_roles;
+        </rollback>
+    </changeSet>
+
+
+
     <changeSet author="dzhukov" id="20171008-1">
         <comment>Structure for table "links"</comment>
         <sql>
             CREATE TABLE links (
             link_id BIGSERIAL,
             link text NOT NULL UNIQUE,
+            description varchar(200) NOT NULL,
             link_master bigint NOT NULL,
             CONSTRAINT link_id_pk PRIMARY KEY (link_id),
             FOREIGN KEY (link_master) REFERENCES all_users (user_id)
@@ -43,7 +76,7 @@
         <sql>
             CREATE TABLE lists (
             list_id BIGSERIAL,
-            describe varchar(200) NOT NULL,
+            description varchar(200) NOT NULL,
             list_master bigint NOT NULL,
             CONSTRAINT list_id_pk PRIMARY KEY (list_id),
             FOREIGN KEY (list_master) REFERENCES all_users (user_id)
