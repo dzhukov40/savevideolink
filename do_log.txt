@@ -33,13 +33,14 @@
     - postgreSQL
     - liqubase
   - сервер разворачивания
-    - jboss
+    - jboss (*) WildFly
+    - nginx (*) прячим ресты
   - способ разворачивания и настройки
     - ansible
   - тестирование
     - JUnit
   - front
-    - Angular (*)
+    - Angular (*) уже есть 5-ый
 
 - [архитектура]
 
@@ -146,7 +147,8 @@
           <module>development/savevideolink-parent</module>
         </modules>
       ]
-    - [config]: пока не ясно что за настройки тут будут
+    - [config]: тут будут все проперти нашего приложения [*.property]
+      - эти настройки можно будет менять не перекомпилируя приложение
     - модуль [savevideolink-parent]: в этом модуле будет главный помник с версиями артифактов
     - модуль [savevideolink-base]: тут у нас основа
     - модуль [savevideolink-utill]: вспомогательные классы
@@ -218,6 +220,60 @@
    - нужно подключиться к базюли из [idea]
      - [vieu] -> [Database] -> [+] -> [postgreSQL]
      - указали параметры, жмакнули скачать драйвер, приконектились
+   - сделали скрипты по накату тестовых данных и очистке таблиц
+     - накат: [test_insert_1.0.0.sql]
+     - удаление: [test_delete_1.0.0.sql]
+
+
+5) настраиваем сервер приложений [wildfly] (*) будем дописывать тут при изменении!!!
+  - у нас уже есть виртуалка [savevideolink]
+  - топаем на сайт скачать сервер [http://wildfly.org]
+    - [11.0.0.Final 2017-10-23 Java EE7 Full & Web Distribution]
+    - качаем и кладем в [ansible/distrib/wildfly]
+      - (*) не включаем в индекс, нужно прописать в [ansible] скачку и установку
+      - [!] важно! так - как больше 100мб файлы заливать нельзя на [github]
+    - разархивируем только на стенде! [ tar xvfz *.tar.gz ]
+    - стартуем [bin/] -> [ ./standalone.sh ] (*) Java not found
+      - [*] если нет [java], то ставим (пример поставить OracleJava):
+          - [ sudo add-apt-repository ppa:webupd8team/java ]
+          - [ sudo apt-get update ]
+          - [ sudo apt-get install oracle-java8-installer ]
+          - [!] указать путь
+            - [ sudo update-alternatives --config java ] (*) где Java
+            - [ cd /etc/enviroment ]
+            - [ sudo vim /etc/environment ]
+              - добавили переменную к [PATH]
+              - [ JAVA_HOME="/usr/lib/jvm/java-8-oracle/" ]
+        - нужно добавить юзера запустив скрипт [./add-user.sh]
+          - добавляем именно [a) Management User (mgmt-users.properties)]
+            - login:    root
+            - password: root
+          - везде [yes] или [enter]
+    - запускаем [bin/] -> [ ./standalone.sh ]
+      - теперь запускаем [sudo ./standalone.sh]
+      - [!] чтобы со всех [ip] можно было подключиться
+        - [ sudo ./standalone.sh -b=0.0.0.0 ]
+        - [ sudo ./standalone.sh -bmanagement=0.0.0.0 ]
+      - топаем на запущенный сервер [http://127.0.0.1:9990] (*) админка
+      - топаем на запущенный сервер [http://127.0.0.1:8080] (*) приложение
+  - надо в [idea] настроить удаленный сервер (*) не настроили
+    - [ Edit configurations ] -> [+] -> [Jbos remote]
+
+
+6) нужно настроить [spring] (*) будем дописывать тут при изменении!!!
+  - топаем писать минимальный код в [savevideolink-base] это наше приложение
+  - создаем иерархию пакетов [ ru.doneathome.savevideolink.base ]
+
+
+
+
+
+
+
+
+
+
+
 
 
 
