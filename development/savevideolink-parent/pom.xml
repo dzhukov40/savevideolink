@@ -14,6 +14,106 @@
     <packaging>pom</packaging> <!--очень важно чтобы не пытался сделать jar-->
 
 
+    <!-- удобно вынести указание версий библиотек в одно место -->
+    <properties>
+        <file.encoding>UTF-8</file.encoding>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+
+        <java-version>1.8</java-version>
+
+        <org.springframework-boot-version>1.5.8.RELEASE</org.springframework-boot-version>
+        <org.springframework-version>5.0.1.RELEASE</org.springframework-version>
+
+        <jstl.v>1.2</jstl.v>
+        <javax.servlet-api-version>3.1.0</javax.servlet-api-version>
+        <com.fasterxml.jackson.core-version>2.9.2</com.fasterxml.jackson.core-version>
+
+        <!-- Плагины -->
+        <wildfly-maven-plugin-version>1.2.1.Final</wildfly-maven-plugin-version>
+
+        <!-- Пакеты -->
+
+        <!-- имя варочки для пакета [savevideolink-base] -->
+        <finalName-version>savevideolink</finalName-version>
+
+        <!-- параметры для деплоя варки на удаленный сервер [wildfly] -->
+        <wildfly-hostname>192.168.56.10</wildfly-hostname>
+        <wildfly-port>9990</wildfly-port>
+        <wildfly-username>root</wildfly-username>
+        <wildfly-password>root</wildfly-password>
+    </properties>
+
+
+    <!-- это зависимости нашего проекта на библиотеки из удаленного репозитория -->
+    <dependencyManagement>
+        <dependencies>
+
+            <!-- Servlet -->
+            <dependency>
+                <groupId>javax.servlet</groupId>
+                <artifactId>javax.servlet-api</artifactId>
+                <version>${javax.servlet-api-version}</version>
+                <scope>provided</scope>
+            </dependency>
+
+            <!-- Jackson -->
+            <dependency>
+                <groupId>com.fasterxml.jackson.core</groupId>
+                <artifactId>jackson-databind</artifactId>
+                <version>${com.fasterxml.jackson.core-version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.fasterxml.jackson.core</groupId>
+                <artifactId>jackson-core</artifactId>
+                <version>${com.fasterxml.jackson.core-version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.fasterxml.jackson.core</groupId>
+                <artifactId>jackson-annotations</artifactId>
+                <version>${com.fasterxml.jackson.core-version}</version>
+            </dependency>
+
+            <!-- Spring -->
+            <dependency>
+                <groupId>org.springframework</groupId>
+                <artifactId>spring-context</artifactId>
+                <version>${org.springframework-version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.springframework</groupId>
+                <artifactId>spring-web</artifactId>
+                <version>${org.springframework-version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.springframework</groupId>
+                <artifactId>spring-webmvc</artifactId>
+                <version>${org.springframework-version}</version>
+            </dependency>
+
+
+
+        </dependencies>
+    </dependencyManagement>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <!-- это модули, для которых этот модуль является родителем, для наследования -->
     <modules>
         <module>../savevideolink-utill</module>
         <module>../savevideolink-base</module>

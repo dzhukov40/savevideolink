@@ -263,10 +263,24 @@
 6) нужно настроить [spring] (*) будем дописывать тут при изменении!!!
   - топаем писать минимальный код в [savevideolink-base] это наше приложение
   - создаем иерархию пакетов [ ru.doneathome.savevideolink.base ]
-
-
-
-
+  - выбирали между использование [Spring Framework] и [Spring Boot]
+    - [Spring Boot]
+      - похоже [Spring boot] это уже со встроенным сервачком tomcat !!
+        - полуется мы получаем [jar] которая при запуске является сервером с приложением
+        - поэтому смотрим как все завести просто на Спринге
+      - гуглим плагин для удаленного деплоя [ wildfly maven remote deploy ]
+        - плагин заработал [savevideolink-base] -> [Plugins] -> [wildfly]
+      - помним что сервачек на виртуалке
+        - [ cd /My/savevideolink/wildfly/wildfly-11.0.0.Final/bin ]
+        - [ sudo ./standalone.sh -b=0.0.0.0 -bmanagement=0.0.0.0 ]
+    - не можем получить ответ от запросса на контроллер, включаем DEBUG для лога wildfly
+      [ /My/savevideolink/wildfly/wildfly-11.0.0.Final/standalone/configuration/standalone.xml ]
+      - поиск подсистемы [ logging ] -> set DEBUG level (*) в нескольких местах!
+      - [!] была проблемка с [Jackson] писалось что какойто класс не могли найти
+        - решения подключить 3-и зависимости этой библиотеки
+    - [!] варнинги на комментарии(((
+      - [this inspections reports usage of the default file template for file header]
+      - поправили шаблон добавлением еще одной строки [ --- ]
 
 
 

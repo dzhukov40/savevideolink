@@ -1,11 +1,20 @@
 package ru.doneathome.savevideolink.base.controller;
 
 
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
+/**
+ * Created by dzhukov on 11.11.17.
+ * ---
+ */
 
-//@ControllerAdvice
+@RestController
 public class AbstractBaseController {
 
-	public static final Long FIRST_REPLICA = 1L;
+	@RequestMapping("/echo")
+	public String echo() {
+		return "Hello World!";
+	}
 
 }
