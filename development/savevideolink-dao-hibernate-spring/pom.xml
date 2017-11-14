@@ -13,4 +13,30 @@
     <artifactId>savevideolink-dao-hibernate-spring</artifactId>
 
 
+    <!-- удобно что версии пакетов задаются в родительском [.pom] -->
+    <dependencies>
+
+        <!-- Hibernate -->
+        <dependency>
+            <groupId>org.hibernate</groupId>
+            <artifactId>hibernate-core</artifactId>
+            <version>${org.hibernate.core-version}</version>
+        </dependency>
+
+    </dependencies>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 </project>

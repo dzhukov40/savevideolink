@@ -18,11 +18,15 @@ import javax.servlet.ServletRegistration;
 public class Application implements WebApplicationInitializer {
 
     public void onStartup(ServletContext servletContext) throws ServletException {
+
+        // это root Spring application context
         AnnotationConfigWebApplicationContext ctx = new AnnotationConfigWebApplicationContext();
 
+        // засовываем бины конфигурации
         ctx.register(WebConfig.class);
         ctx.setServletContext(servletContext);
 
+        // создаем и регестрируем главный сервлет [dispatcher servlet]
         ServletRegistration.Dynamic dynamic = servletContext.addServlet("dispatcher", new DispatcherServlet(ctx));
 
         dynamic.addMapping("/");
