@@ -23,6 +23,31 @@
             <version>${org.hibernate.core-version}</version>
         </dependency>
 
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-beans</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-context</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-tx</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-jdbc</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-orm</artifactId>
+        </dependency>
+
     </dependencies>
 
 
@@ -31,7 +56,12 @@
 
 
 
+    <build>
 
+        <!-- указываем как будет называться *.jar файл -->
+        <finalName>${project.artifactId}</finalName>
+
+    </build>
 
 
 

@@ -10,9 +10,10 @@ import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.ServletRegistration;
 
+import ru.doneathome.savevideolink.daoHibernateSpring.configuration.HibernateConfig;
+
 /**
- * Created by dzhukov on 11.11.17.
- * ---
+ *
  */
 
 public class Application implements WebApplicationInitializer {
@@ -24,6 +25,7 @@ public class Application implements WebApplicationInitializer {
 
         // засовываем бины конфигурации
         ctx.register(WebConfig.class);
+        ctx.register(HibernateConfig.class);
         ctx.setServletContext(servletContext);
 
         // создаем и регестрируем главный сервлет [dispatcher servlet]

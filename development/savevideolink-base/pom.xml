@@ -55,6 +55,12 @@
             <artifactId>spring-webmvc</artifactId>
         </dependency>
 
+        <!-- Project jars -->
+        <dependency>
+            <groupId>ru.doneathome.savevideolink</groupId>
+            <artifactId>savevideolink-dao-hibernate-spring</artifactId>
+        </dependency>
+
     </dependencies>
 
 

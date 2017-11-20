@@ -1,5 +1,6 @@
 package ru.doneathome.savevideolink.daoHibernateSpring.dao.api;
 
+import org.springframework.stereotype.Repository;
 import ru.doneathome.savevideolink.daoHibernateSpring.base.Dao;
 import ru.doneathome.savevideolink.daoHibernateSpring.model.User;
 
